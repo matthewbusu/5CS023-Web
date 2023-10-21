@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+// Check if the user is authenticated
+if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+    //header("Location: login.html");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +39,7 @@
               </li>
             </ul>
             <form class="d-flex" role="search">
-              <a href="login.html" button class="btn btn-success" type="submit">Log Out</a>
+              <a href="logout.php" button class="btn btn-success" type="submit">Log Out</a>
             </form>
           </div>
         </div>
