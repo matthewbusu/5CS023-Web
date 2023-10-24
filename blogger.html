@@ -29,14 +29,14 @@
               </li>
             </ul>
             <form class="d-flex" role="search">
-              <a href="login.html" button class="btn btn-success" type="submit">Log Out</a>
+              <a href="logout.php" button class="btn btn-success" type="submit">Log Out</a>
             </form>
           </div>
         </div>
       </nav>
     <div class="container">
-        <div class="p-3 mb-2 bg-light text-dark"><div class="mb-3">
-          <form class="row gy-2 gx-3 align-items-center" action="input_blog.php" method="post">
+        <div class="p-3 mb-2 bg-light text-dark"><br>
+          <form class="row gy-2 gx-3 align-items-center" action="input_blog.php" method="post" enctype="multipart/form-data">
     
             <div class="col-auto">
               <label class="visually-hidden" for="autoSizingInput">Name</label>
@@ -63,7 +63,7 @@
             </div>
             <div class="input-group mb-3">
               <label class="input-group-text" for="inputGroupFile01">Upload Photo</label>
-              <input type="file" class="form-control" id="inputGroupFile01">
+              <input type="file" class="form-control" id="inputGroupFile01" name="image" accept="image/*" >
             </div>
             <div class="col-auto">
               <button type="submit" class="btn btn-success">Submit</button>

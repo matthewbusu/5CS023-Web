@@ -21,7 +21,7 @@ $password = $_POST['password'];
 $sql = "INSERT INTO users (name, surname, email, password) VALUES ('$name', '$surname', '$email', '$password')";
 if ($conn->query($sql) === TRUE) {
     $_SESSION['success_message'] = "Registration successful!";
-    header("Location: index.php");
+    header("Location: login.php");
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
