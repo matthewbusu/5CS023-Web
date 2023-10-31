@@ -1,9 +1,18 @@
+<?php
+session_start();
+
+// Check if the user is authenticated
+if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="widt=device-width, initial-scale=1.0">
-    <title>My the Website</title>
+    <title>My Website</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
@@ -16,7 +25,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="Index_Blogger.php">Home</a>
+                <a class="nav-link" aria-current="page"  href="Index_Blogger.php">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="news.html">News</a>
@@ -25,7 +34,7 @@
                 <a class="nav-link" aria-current="page" href="blogger.html">Write Blog</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   My Profile
                 </a>
                 <ul class="dropdown-menu">
@@ -42,45 +51,56 @@
         </div>
       </nav>
     <div class="container">
-        <div class="p-3 mb-2 bg-light text-dark"><br>
-          <form class="row gy-2 gx-3 align-items-center" action="input_blog.php" method="post" enctype="multipart/form-data">
-    
-            <div class="col-auto">
-              <label class="visually-hidden" for="autoSizingInput">Name</label>
-              <input type="text" class="form-control" id="autoSizingInput" placeholder="Name">
+        <br>
+        
+          <form action="search.php" method="post">
+            <div class="form-floating mb-3 ">
+              <input class="form-control" id="floatingInput" name="searchTerm">
+              <label for="floatingInput">Enter Search here!</label><br>
+              <button type="submit" class="btn btn-light">Search</button>
             </div>
-            <div class="col-auto">
-              <label class="visually-hidden" for="autoSizingInput">Surname</label>
-              <input type="text" class="form-control" id="autoSizingInput" placeholder="Surname">
-            </div>
-            <div class="col-auto">
-              <label class="visually-hidden" for="autoSizingInput">Titles</label>
-              <input type="text" class="form-control" id="autoSizingInput" placeholder="Title" name="title" >
-            </div>
-            <div class="col-auto">
-              <label class="visually-hidden" for="autoSizingInputGroup">Username</label>
-            <div class="input-group">
-                <div class="input-group-text">@</div>
-                <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="Username">
-            </div>
-            </div>
-            <div class="form-floating">
-              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="blog"></textarea>
-              <label for="floatingTextarea2">Write Blog here </label>
-            </div>
-            <div class="input-group mb-3">
-              <label class="input-group-text" for="inputGroupFile01">Upload Photo</label>
-              <input type="file" class="form-control" id="inputGroupFile01" name="image" accept="image/*" >
-            </div>
-            <div class="col-auto">
-              <button type="submit" class="btn btn-success">Submit</button>
-            </div>
-          </form>
-        </div>
+          </form>    
+      
+          <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "test";
+        
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            $userId = $_COOKIE['user_id'];
+        
+            
+            $sql = "SELECT title, blog, filename FROM blog where user_id = '$userId'";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {  
+               // echo "<ul>";
+                
+                while ($row = $result->fetch_assoc()) 
+                {
+                    echo "<div class='mb-2 p-2 bg-light text-dark'>";
+                    echo " Title: <input class='form-control' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";    
+                    echo "Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>";
+                    echo "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'>";
+                    echo "</div>";
+                    
+                  }
+                
+               // echo "</ul>";
+            } else {
+                echo "No blogs found.";
+            }
+            
+            $conn->close();
+          ?>
+      
       </div>
-    </div>
-
-
+    
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 

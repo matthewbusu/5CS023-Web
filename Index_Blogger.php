@@ -31,10 +31,17 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
                 <a class="nav-link" href="news.html">News</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="blogger.html">Blog</a>
+                <a class="nav-link" aria-current="page" href="blogger.html">Write Blog</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  My Profile
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="myblogs.php">My Blogs</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">My Account</a></li>
+                </ul>
               </li>
             </ul>
             <form class="d-flex" role="search">
@@ -67,7 +74,7 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
             }
         
             
-            $sql = "SELECT title, blog, filename FROM blog";
+            $sql = "SELECT title, blog, filename FROM blog ORDER BY blog_id DESC";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {  
                // echo "<ul>";
