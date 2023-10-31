@@ -26,7 +26,7 @@ $blog = $_POST['blog'];
 }*/
 
 if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
-    $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/img/';
+    $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/5CS023/img/';
     $targetFile = $targetDir . basename($_FILES["image"]["name"]);
 
 

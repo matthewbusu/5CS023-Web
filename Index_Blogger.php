@@ -53,8 +53,7 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
               <label for="floatingInput">Enter Search here!</label><br>
               <button type="submit" class="btn btn-light">Search</button>
             </div>
-          </form>
-        
+          </form>    
       
           <?php
             $servername = "localhost";
@@ -69,7 +68,7 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
             }
         
             
-            $sql = "SELECT title, blog FROM blog";
+            $sql = "SELECT title, blog, filename FROM blog";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {  
                // echo "<ul>";
@@ -79,6 +78,7 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
                     echo "<div class='mb-2 p-2 bg-light text-dark'>";
                     echo " Title: <input class='form-control' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";    
                     echo "Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>";
+                    echo "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'>";
                     echo "</div>";
                     
                   }
@@ -90,7 +90,7 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
             
             $conn->close();
           ?>
-        
+      
       </div>
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
