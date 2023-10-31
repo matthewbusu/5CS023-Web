@@ -1,5 +1,12 @@
 <?php
 
+session_start();
+
+// Check if the user is authenticated
+if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+    exit();
+}
+
 // Database connection parameters
 $servername = "localhost";
 $username = "root";
@@ -28,6 +35,7 @@ $blog = $_POST['blog'];
 if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/5CS023/img/';
     $targetFile = $targetDir . basename($_FILES["image"]["name"]);
+    $userId = $_COOKIE['user_id'];
 
 
     // Check if the file already exists
@@ -38,10 +46,10 @@ if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
             // Save metadata to the database
             $filename = basename($_FILES["image"]["name"]);
-            $sql = "INSERT INTO blog (title, blog, filename) VALUES ('$title', '$blog', '$filename')";
+            $sql = "INSERT INTO blog (user_id, title, blog, filename) VALUES ('$userId', '$title', '$blog', '$filename')";
             
             if ($conn->query($sql) === TRUE) {
-                echo "The file $filename has been uploaded and metadata saved to the database.";
+                header("Location: Index_blogger.php");
             } else {
                 echo "Error saving metadata to the database: " . $conn->error;
             }
