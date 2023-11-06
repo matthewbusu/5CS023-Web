@@ -31,7 +31,7 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="myblogs.php">My Blogs</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">My Account</a></li>
+                  <li><a class="dropdown-item" href="account.php">My Account</a></li>
                 </ul>
               </li>
             </ul>
@@ -44,25 +44,9 @@
     <div class="container">
         <div class="p-3 mb-2 bg-light text-dark"><br>
           <form class="row gy-2 gx-3 align-items-center" action="input_blog.php" method="post" enctype="multipart/form-data">
-    
-            <div class="col-auto">
-              <label class="visually-hidden" for="autoSizingInput">Name</label>
-              <input type="text" class="form-control" id="autoSizingInput" placeholder="Name">
-            </div>
-            <div class="col-auto">
-              <label class="visually-hidden" for="autoSizingInput">Surname</label>
-              <input type="text" class="form-control" id="autoSizingInput" placeholder="Surname">
-            </div>
             <div class="col-auto">
               <label class="visually-hidden" for="autoSizingInput">Titles</label>
               <input type="text" class="form-control" id="autoSizingInput" placeholder="Title" name="title" >
-            </div>
-            <div class="col-auto">
-              <label class="visually-hidden" for="autoSizingInputGroup">Username</label>
-            <div class="input-group">
-                <div class="input-group-text">@</div>
-                <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="Username">
-            </div>
             </div>
             <div class="form-floating">
               <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="blog"></textarea>

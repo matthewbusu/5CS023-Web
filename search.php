@@ -31,7 +31,7 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="myblogs.php">My Blogs</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">My Account</a></li>
+                  <li><a class="dropdown-item" href="account.php">My Account</a></li>
                 </ul>
               </li>
             </ul>
@@ -79,12 +79,19 @@ if(isset($_POST['searchTerm'])){
         
         while($row = $result->fetch_assoc()) 
           {
-            echo "<div class='mb-2 p-2 bg-light text-dark'>";
-            echo " Title: <input class='form-control' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";    
-            echo "Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>";
-            echo "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'>";
-            echo "</div>";
-            
+            echo "<div class='mb-2 p-2 bg-light text-dark'>"; 
+              echo "<div class='row'>";
+              echo  "<div class='col'>";
+              echo    "Name: <input class='form-control' type='text' value='" . $row["name"] . "' aria-label='readonly input example' readonly>";
+              echo  "</div>";
+              echo  "<div class='col'>";
+              echo    "Surname: <input class='form-control' type='text' value='" . $row["surname"] . "' aria-label='readonly input example' readonly>";
+              echo  "</div>";
+              echo "</div><br>";
+              echo "Title: <input class='form-control' style='width: 625px' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";
+              echo "Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>";
+              echo "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'>";
+              echo "</div>";  
           }
          } else {
         echo "No results found.";
