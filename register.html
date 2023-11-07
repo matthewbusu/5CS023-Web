@@ -36,23 +36,42 @@
         <form class="row g-3" action="connect.php" method="post">
           <div class="col-12">
             <label for="inputName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+            <input type="text" class="form-control" id="name" placeholder="Name" name="name" required>
           </div>
           <div class="col-12">
             <label for="inputSurname" class="form-label">Surname</label>
-            <input type="text" class="form-control" id="surname" placeholder="Surname" name="surname">
+            <input type="text" class="form-control" id="surname" placeholder="Surname" name="surname" required>
           </div>
           <div class="col-md-6">
             <label for="inputEmail4" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email">
+            <input type="email" class="form-control" id="email" name="email" required>
           </div>
           <div class="col-md-6">
             <label for="inputPassword4" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password">
+            <input type="password" class="form-control" id="password" name="password" required>
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn-success">Register</button>
-          </div>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Register
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirm Registration</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Make Sure that you have insereted the correct details.
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Confirm</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>  
         </form>
       </div>  
     </div>

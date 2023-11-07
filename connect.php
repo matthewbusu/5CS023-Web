@@ -20,10 +20,9 @@ $password = $_POST['password'];
 // SQL query to insert data
 $sql = "INSERT INTO users (name, surname, email, password) VALUES ('$name', '$surname', '$email', '$password')";
 if ($conn->query($sql) === TRUE) {
-    $_SESSION['success_message'] = "Registration successful!";
-    header("Location: login.php");
+    header("Location: login.html");
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "<script>alert('Error: $error_message');</script>";
 }
 
 $conn->close();

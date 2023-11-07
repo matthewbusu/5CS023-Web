@@ -40,7 +40,7 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="myblogs.php">My Blogs</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">My Account</a></li>
+                  <li><a class="dropdown-item" href="account.php">My Account</a></li>
                 </ul>
               </li>
             </ul>
@@ -89,7 +89,24 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
                     echo "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'><br>";
                     echo "<form action='delete.php' method='POST'>";
                     echo "<input class='form-control' type='hidden' value='" . $row["blog_id"] . "' aria-label='readonly input example' readonly name='blog_id'>";
-                    echo "<button type='submit' class='btn btn-danger'>Delete</button>";
+                    echo "<button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#staticBackdrop'>Delete </button>";
+                    echo  " <div class='modal fade' id='staticBackdrop' data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true'>
+                            <div class='modal-dialog'>
+                              <div class='modal-content'>
+                                <div class='modal-header'>
+                                  <h1 class='modal-title fs-5' id='staticBackdropLabel'>Confirm Delete</h1>
+                                  <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                </div>
+                                <div class='modal-body'>
+                                  Are you sure you want to Delete this Blog?
+                                </div>
+                                <div class='modal-footer'>
+                                  <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>No</button>
+                                  <button type='submit' class='btn btn-danger'>Yes, Delete</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>";   
                     echo "</form>";
                     echo "</div>";
                     
