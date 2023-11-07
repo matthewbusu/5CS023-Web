@@ -98,12 +98,24 @@ if ($result->num_rows > 0) {
             <label for="inputEmail4" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email" required value="<?php echo $email; ?>">
           </div>
+        </form>
+      </div>
+      <div class="p-3 mb-2 bg-light text-dark">
+        <form class="row g-3" action="chpassword.php" method="post">
           <div class="col-md-6">
-            <label for="inputPassword4" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <label for="inputPassword4" class="form-label">Old Password</label>
+            <input type="password" class="form-control" id="password" name="oldpassword" required>
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="password" name="newpassword" required>
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Confirm New Password</label>
+            <input type="password" class="form-control" id="password" name="confirmpassword" required>
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn-success">Update</button>
+            <button type="submit" class="btn btn-success">Change Password</button>
           </div>
         </form>
       </div>  

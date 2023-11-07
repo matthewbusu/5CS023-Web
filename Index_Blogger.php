@@ -5,6 +5,35 @@
   if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
       exit();
   }
+  
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "test";
+
+  $conn = new mysqli($servername, $username, $password, $dbname);
+
+  if ($conn->connect_error) 
+  {
+    die("Connection failed: " . $conn->connect_error);
+  }
+
+  $userId = $_COOKIE['user_id'];
+
+  $sqlUser = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
+
+  $result = $conn->query($sqlUser);
+
+
+  if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+      $name = $row["name"];
+      $surname = $row["surname"];
+    
+  } else {
+      
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,6 +80,12 @@
     </nav>
     <div class="container">
       <br>
+      <div>
+        <h3>
+          <small class="text-body-secondary"> Welcome to Travel Blog <?php echo $name; ?>, enjoy your stay and respect other bloggers.</small>
+        </h3>
+      </div>
+      <br>
       <form action="search.php" method="post">
         <div class="form-floating mb-3 ">
           <input class="form-control" id="floatingInput" name="searchTerm">
@@ -59,19 +94,8 @@
         </div>
       </form>    
   
+      
       <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "test";
-    
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        if ($conn->connect_error) 
-        {
-          die("Connection failed: " . $conn->connect_error);
-        }
-    
         $sql = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname FROM users, blog WHERE blog.user_id = users.user_id ORDER BY blog.blog_id DESC ";
 
         $result = $conn->query($sql);

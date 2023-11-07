@@ -17,8 +17,11 @@ $surname = $_POST['surname'];
 $email = $_POST['email'];
 $password = $_POST['password']; 
 
+$userId = $_COOKIE['user_id'];
+
 // SQL query to insert data
-$sql = "INSERT INTO users (name, surname, email, password) VALUES ('$name', '$surname', '$email', '$password')";
+$sql = "UPDATE users SET name = '$name', surname = '$surname', email = '$email' WHERE user_id = '$userId'";
+
 if ($conn->query($sql) === TRUE) {
     $_SESSION['success_message'] = "Update successful!";
     header("Location: Index_Blogger.php");
