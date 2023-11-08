@@ -78,16 +78,16 @@
         </div>
       </div>
     </nav>
-    <div class="container">
+    <div class="container" style="width: 50%">
       <br>
       <div>
         <h3>
-          <small class="text-body-secondary"> Welcome to Travel Blog <?php echo $name; ?>, enjoy your stay and respect other bloggers.</small>
+          <small class="text-body-secondary"> Welcome to Travel Blog <?php echo $name; $surname; ?>, enjoy your stay and respect other bloggers.</small>
         </h3>
       </div>
       <br>
       <form action="search.php" method="post">
-        <div class="form-floating mb-3 ">
+        <div class="form-floating mb-3">
           <input class="form-control" id="floatingInput" name="searchTerm">
           <label for="floatingInput">Enter Search here!</label><br>
           <button type="submit" class="btn btn-light">Search</button>
@@ -99,26 +99,52 @@
         $sql = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname FROM users, blog WHERE blog.user_id = users.user_id ORDER BY blog.blog_id DESC ";
 
         $result = $conn->query($sql);
+        
+        
 
-        if ($result->num_rows > 0) 
+        if ($result->num_rows > 0)
+        
+        
         {  
           while ($row = $result->fetch_assoc()) 
+          
+          
             {
-              echo "<div class='mb-2 p-2 bg-light text-dark justify-content-center'>"; 
-              echo  "<div class='row'>";
-              echo    "<div class='col'>";
-              echo      "Name: <input class='form-control' type='text' value='" . $row["name"] . "' aria-label='readonly input example' readonly>";
-              echo    "</div>";
-              echo    "<div class='col'>";
-              echo      "Surname: <input class='form-control' type='text' value='" . $row["surname"] . "' aria-label='readonly input example' readonly>";
-              echo    "</div>";
-              echo  "</div><br>";
-              echo  "Title: <input class='form-control' style='width: 625px' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";
-              echo  "Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>";
-              echo  "<div class='justify-content-center'>";
-              echo    "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50 ' alt='blog image'>";
-              echo  "</div>";
-              echo "</div>";
+              echo "
+              <div class='mb-2 p-2 bg-light text-dark justify-content-center'>
+                <div class='row'>
+                  <div class='col-2 d-flex justify-content-center'>
+                   <img src='/img/po.jpg' style='height: 95px' class='img-thumbnail'>
+                  </div>
+                  <div class='col-4'>
+                    <figure>
+                      <blockquote class='blockquote'>
+                        <p>". $row["name"] ." ".  $row["surname"] ."</p>
+                      </blockquote>
+                      <figcaption class='blockquote-footer'>
+                        To Travel to see the <cite title='Source Title'>World</cite>
+                      </figcaption>
+                    </figure> 
+                  </div>
+                  <div class='col'> 
+                    <p class='display-6'>" . $row["title"] . "</p>
+                  </div>
+                </div><br>
+                Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>
+                <div class='d-flex justify-content-center'>
+                  <img src='img/" . $row["filename"] . "' class='d-block w-50 h-50 d-flex justify-content-center' alt='blog image'>  
+                </div>
+              </div>
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              ";
             }
         } else 
             {
