@@ -1,4 +1,7 @@
 <?php
+
+require_once 'access.php';
+
   session_start();
 
   // Check if the user is authenticated
@@ -18,7 +21,10 @@
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $userId = $_COOKIE['user_id'];
+  $encryptedValue = $_COOKIE['user_id'];
+
+  $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptionKey, 0, $encryptionKey);
+
 
   $sqlUser = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
 
@@ -29,6 +35,7 @@
       $row = $result->fetch_assoc();
       $name = $row["name"];
       $surname = $row["surname"];
+
     
   } else {
       

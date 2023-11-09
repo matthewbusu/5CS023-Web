@@ -1,4 +1,7 @@
 <?php
+
+require_once 'access.php';
+
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     session_start();
@@ -30,9 +33,10 @@ if ($result->num_rows > 0) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $userId = $row['user_id'];
-        $_SESSION['user_id'] = $userId;
+        $encryptedValue = openssl_encrypt($userId, 'aes-256-cbc', $encryptionKey, 0, $encryptionKey);
+        $_SESSION['user_id'] = $encryptedValue;
         // Store user_id in a cookie valid for 7 days
-        setcookie('user_id', $userId, time() + (7 * 24 * 60 * 60), '/');
+        setcookie('user_id', $encryptedValue, time() + (7 * 24 * 60 * 60), '/');
         header("Location: Index_blogger.php");
     }
 

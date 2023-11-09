@@ -1,4 +1,6 @@
 <?php
+
+require_once 'access.php';
 session_start();
 
 // Check if the user is authenticated
@@ -73,8 +75,9 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $userId = $_COOKIE['user_id'];
-        
+            $encryptedValue = $_COOKIE['user_id'];
+
+            $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptionKey, 0, $encryptionKey);
             
             $sql = "SELECT blog_id, title, blog, filename FROM blog where user_id = '$userId'";
             $result = $conn->query($sql);

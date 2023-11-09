@@ -24,13 +24,6 @@ $title = $_POST['title'];
 $blog = $_POST['blog'];
 
 // SQL query to insert data
-//$sql = "INSERT INTO blog (title, blog) VALUES ('$title', '$blog')";
-/*if ($conn->query($sql) === TRUE) {
-    $_SESSION['success_message'] = "Registration successful!";
-    header("Location: Index_Blogger.php");
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-}*/
 
 if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/5CS023/img/';

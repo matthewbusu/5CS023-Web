@@ -1,5 +1,5 @@
 <?php
-
+require_once 'access.php';
 session_start();
 
 
@@ -20,7 +20,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$userId = $_COOKIE['user_id'];
+$encryptedValue = $_COOKIE['user_id'];
+
+$userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptionKey, 0, $encryptionKey);
 
 $sql = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
 
