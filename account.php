@@ -87,7 +87,12 @@ if ($result->num_rows > 0) {
       </div>
     </nav>
     <div class="container">
-    <div class="p-3 mb-2 bg-light text-dark">
+      <div class="p-3 mb-2 bg-light text-dark">
+        <br>
+        <h2>
+          Account Section.
+        </h2>
+        <p>Manage your profile effortlessly by updating your details and securing your account with a strong password. 🔐</p><br>
         <form class="row g-3" action="update.php" method="post">
           <div class="col-12">
             <label for="inputName" class="form-label">Name</label>
@@ -126,6 +131,10 @@ if ($result->num_rows > 0) {
         </form>
       </div>
       <div class="p-3 mb-2 bg-light text-dark">
+      <div class="form-floating mb-3 ">
+        <h4>
+          Password Section.
+        </h4><br>
         <form class="row g-3" action="chpassword.php" method="post">
           <div class="col-md-12">
             <label for="inputPassword4" class="form-label">Old Password</label>
@@ -141,33 +150,13 @@ if ($result->num_rows > 0) {
           </div>
           <div class="col-md-12">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Change Password 2
+              Change Password
             </button>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    Confirm Password! 
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Confirm</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              Change Password
-            </button>
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Change Password</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">

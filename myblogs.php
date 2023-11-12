@@ -1,12 +1,46 @@
 <?php
 
 require_once 'access.php';
-session_start();
 
-// Check if the user is authenticated
-if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
-    exit();
-}
+  session_start();
+
+  // Check if the user is authenticated
+  if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+      exit();
+  }
+  
+  $servername = "localhost";
+  $username = "root";
+  $dbname = "test";
+
+  $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+
+  if ($conn->connect_error) 
+  {
+    die("Connection failed: " . $conn->connect_error);
+  }
+
+  $encodedCookie = $_COOKIE['user_id'];
+
+  $encryptedValue = base64_decode($encodedCookie);
+
+  $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
+
+  $sqlUser = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
+
+  $result = $conn->query($sqlUser);
+
+
+  if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+      $name = $row["name"];
+      $surname = $row["surname"];
+
+  } else {
+      
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -53,15 +87,20 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
         </div>
       </nav>
     <div class="container">
+      <div class="form-floating mb-3 ">
         <br>
-        
-          <form action="search.php" method="post">
-            <div class="form-floating mb-3 ">
-              <input class="form-control" id="floatingInput" name="searchTerm">
-              <label for="floatingInput">Enter Search here!</label><br>
-              <button type="submit" class="btn btn-light">Search</button>
-            </div>
-          </form>    
+        <h2>
+          <?php echo $name; ?>'s Blogs.
+        </h2>
+        <p>You can view all your posted blogs in this section and can delete any of them.</p><br>
+      </div>  
+      <form action="search.php" method="post" onsubmit="return validateSearchForm()">
+        <div class="form-floating mb-3 ">
+          <input class="form-control" id="floatingInput" name="searchTerm">
+          <label for="floatingInput">Enter Search here!</label><br>
+          <button type="submit" class="btn btn-light">Search</button>
+        </div>
+      </form>    
       
           <?php
             $servername = "localhost";
@@ -127,6 +166,20 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script>
+        function validateSearchForm() {
+            var searchTerm = document.getElementById('floatingInput').value;
 
+            
+            var regex = /^[a-zA-Z0-9 ]*$/;
+
+            if (!regex.test(searchTerm)) {
+                alert("Please only enter Text, symbols are not permitted in the search field.");
+                return false; 
+            }
+
+            return true; 
+        }
+    </script>
 </body>
 </html>
