@@ -1,5 +1,7 @@
 <?php
 
+require_once 'access.php';
+
 session_start();
 
 // Check if the user is authenticated
@@ -23,13 +25,19 @@ if ($conn->connect_error) {
 $title = $_POST['title'];
 $blog = $_POST['blog'];
 
+
+$encodedCookie = $_COOKIE['user_id'];
+
+$encryptedValue = base64_decode($encodedCookie);
+
+$userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
 // SQL query to insert data
 
 if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/5CS023/img/';
     $targetFile = $targetDir . basename($_FILES["image"]["name"]);
-    $userId = $_COOKIE['user_id'];
-
+    
 
     // Check if the file already exists
     if (file_exists($targetFile)) {

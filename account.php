@@ -1,5 +1,6 @@
 <?php
 require_once 'access.php';
+
 session_start();
 
 
@@ -20,9 +21,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$encryptedValue = $_COOKIE['user_id'];
-
-$userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptionKey, 0, $encryptionKey);
+$encodedCookie = $_COOKIE['user_id'];
+$encryptedValue = base64_decode($encodedCookie);
+$userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
 $sql = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
 
@@ -139,6 +140,26 @@ if ($result->num_rows > 0) {
             <input type="password" class="form-control" id="password" name="confirmpassword" required>
           </div>
           <div class="col-md-12">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Change Password 2
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Confirm Password! 
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Confirm</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               Change Password
             </button>

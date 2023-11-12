@@ -8,11 +8,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $servername = "localhost";
 $username = "root";
-$password = "";
 $dbname = "test";
 
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $dbpassword, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -20,8 +19,9 @@ if ($conn->connect_error) {
 
 $email = $_POST['email'];
 $password = $_POST['password'];
+$hashedPass = hash('sha256', $password);
 
-$sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+$sql = "SELECT * FROM users WHERE email = '$email' AND password = '$hashedPass'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -33,10 +33,18 @@ if ($result->num_rows > 0) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $userId = $row['user_id'];
-        $encryptedValue = openssl_encrypt($userId, 'aes-256-cbc', $encryptionKey, 0, $encryptionKey);
-        $_SESSION['user_id'] = $encryptedValue;
-        // Store user_id in a cookie valid for 7 days
-        setcookie('user_id', $encryptedValue, time() + (7 * 24 * 60 * 60), '/');
+        
+
+        $encryptedValue = openssl_encrypt($userId, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
+
+        $encodedValue = base64_encode($encryptedValue);
+        
+
+
+        $_SESSION['user_id'] = $encodedValue;
+        // Store user_id in a cookie valid for 1 hour
+        setcookie('user_id', $encodedValue, time()+3600, '/');
         header("Location: Index_blogger.php");
     }
 

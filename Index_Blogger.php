@@ -21,9 +21,11 @@ require_once 'access.php';
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $encryptedValue = $_COOKIE['user_id'];
+  $encodedCookie = $_COOKIE['user_id'];
 
-  $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptionKey, 0, $encryptionKey);
+  $encryptedValue = base64_decode($encodedCookie);
+
+  $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
 
   $sqlUser = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
@@ -36,7 +38,6 @@ require_once 'access.php';
       $name = $row["name"];
       $surname = $row["surname"];
 
-    
   } else {
       
   }

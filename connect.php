@@ -1,18 +1,14 @@
 <?php
 
-session_start();
+require_once 'access.php';
 
-// Check if the user is authenticated
-if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
-    exit();
-}
+
 // Database connection parameters
 $servername = "localhost";
 $username = "root";
-$password = "";
 $dbname = "test";
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $dbpassword, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -23,9 +19,38 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 $quote = $_POST['quote']; 
 
+// Password validation
+if (strlen($password) < $passwordMinlength) {
+    echo "
+            <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                <strong>Password</strong>  must be at least $passwordMinlength characters long.
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>
+         ";
+} elseif ($passwordUppercase && !preg_match('/[A-Z]/', $password)) {
+    echo "Password must contain at least one uppercase letter.";
+} elseif ($passwordLowercase && !preg_match('/[a-z]/', $password)) {
+    echo "Password must contain at least one lowercase letter.";
+} elseif ($passwordNumber && !preg_match('/[0-9]/', $password)) {
+      echo "Password must contain at least one number.";
+} else {
+    $hashedPass = hash('sha256', $password);
+    // SQL query to insert data
+    $sql = "INSERT INTO users (name, surname, email, password, photo, quote ) VALUES ('$name', '$surname', '$email', '$hashedPass', 'photo.jpg', '$quote')";
+    if ($conn->query($sql) === TRUE) {
+        $_SESSION['success_message'] = "Registration successful!";
+        header("Location: index.html");
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    } 
+}
+     
 
 
-if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+
+
+
+/* if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/5CS023/img/';
     $targetFile = $targetDir . basename($_FILES["image"]["name"]);
     echo "Phase 2";
@@ -52,14 +77,15 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
     }
 } else {
     echo "Error uploading file.";
-}
+} */
 
 
 
 
 
-//- SQL query to insert data
-// $sql = "INSERT INTO users (name, surname, email, password, photo, quote ) VALUES ('$name', '$surname', '$email', '$password', 'photo.jpg', '$quote')";
+
+// SQL query to insert data
+// $sql = "INSERT INTO users (name, surname, email, password, photo, quote ) VALUES ('$name', '$surname', '$email', '$hashedPass', 'photo.jpg', '$quote')";
 // if ($conn->query($sql) === TRUE) {
 //     $_SESSION['success_message'] = "Registration successful!";
 //     header("Location: index.html");

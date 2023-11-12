@@ -71,7 +71,8 @@ if(isset($_POST['searchTerm'])){
     $searchTerm = $_POST['searchTerm'];
 
    
-    $sql = "SELECT * FROM blog WHERE title LIKE '%$searchTerm%'";
+    $sql = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname FROM users, blog WHERE blog.user_id = users.user_id AND title LIKE '%$searchTerm%'";
+    $sql2 = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname FROM users, blog WHERE blog.user_id = users.user_id AND name LIKE '%$searchTerm%'";
     $result = $conn->query($sql);
 
     
