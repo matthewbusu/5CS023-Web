@@ -1,4 +1,7 @@
 <?php
+
+  require_once 'access.php';
+
   session_start();
 
   // Check if the user is authenticated
@@ -18,7 +21,11 @@
     die("Connection failed: " . $conn->connect_error);
   }
 
-  $userId = $_COOKIE['user_id'];
+  $encodedCookie = $_COOKIE['user_id'];
+
+  $encryptedValue = base64_decode($encodedCookie);
+
+  $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
   $sqlUser = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
 
@@ -56,7 +63,7 @@
               <a class="nav-link active" aria-current="page"  href="Index_Blogger.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="news.html">News</a>
+              <a class="nav-link" href="countryInfo.php">Country Info</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="blogger.html">Write Blog</a>

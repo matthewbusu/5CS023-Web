@@ -1,46 +1,14 @@
 <?php
+ 
+ session_start();
 
-require_once 'access.php';
-
-  session_start();
-
-  // Check if the user is authenticated
-  if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
-      exit();
-  }
-  
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "test";
-
-  $conn = new mysqli($servername, $username, $password, $dbname);
-
-  if ($conn->connect_error) 
-  {
-    die("Connection failed: " . $conn->connect_error);
-  }
-
-  $encodedCookie = $_COOKIE['user_id'];
-
-  $encryptedValue = base64_decode($encodedCookie);
-
-  $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+ // Check if the user is authenticated
+ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+     exit();
+ }
+ 
 
 
-  $sqlUser = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
-
-  $result = $conn->query($sqlUser);
-
-
-  if ($result->num_rows > 0) {
-      $row = $result->fetch_assoc();
-      $name = $row["name"];
-      $surname = $row["surname"];
-
-  } else {
-      
-  }
 
 ?>
 <!DOCTYPE html>
@@ -50,6 +18,8 @@ require_once 'access.php';
     <meta name="viewport" content="widt=device-width, initial-scale=1.0">
     <title>My Website</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-success" data-bs-theme="dark">
@@ -90,54 +60,25 @@ require_once 'access.php';
       <br>
       <div>
         <h3>
-          <small class="text-body-secondary"> Welcome to Travel Blog <?php echo $name; ?>, enjoy your stay and respect other bloggers.</small>
+          <small class="text-body-secondary"> Let us know where your next destination is and we'll give you some tips!.</small>
         </h3>
       </div>
       <br>
-      <form action="search.php" method="post" onsubmit="return validateSearchForm()">
+      <form action="iframe.php" method="post" onsubmit="return validateSearchForm()">
         <div class="form-floating mb-3">
             <input class="form-control" id="floatingInput" name="searchTerm">
             <label for="floatingInput">Enter Search here!</label><br>
             <button type="submit" class="btn btn-light">Search</button>
         </div>
-      </form>   
-  
-      
-      <?php
-        $sql = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname FROM users, blog WHERE blog.user_id = users.user_id ORDER BY blog.blog_id DESC ";
-
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) 
-        {  
-          while ($row = $result->fetch_assoc()) 
-            {
-              echo "<div class='mb-2 p-2 bg-light text-dark justify-content-center'>"; 
-              echo  "<div class='row'>";
-              echo    "<div class='col'>";
-              echo      "Name: <input class='form-control' type='text' value='" . $row["name"] . "' aria-label='readonly input example' readonly>";
-              echo    "</div>";
-              echo    "<div class='col'>";
-              echo      "Surname: <input class='form-control' type='text' value='" . $row["surname"] . "' aria-label='readonly input example' readonly>";
-              echo    "</div>";
-              echo  "</div><br>";
-              echo  "Title: <input class='form-control' style='width: 625px' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";
-              echo  "Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>";
-              echo  "<div class='justify-content-center'>";
-              echo    "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50 ' alt='blog image'>";
-              echo  "</div>";
-              echo "</div>";
-            }
-        } else 
-            {
-              echo "No blogs found.";
-            }
-        $conn->close();
-      ?>
+      </form>
+       
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="script.js"></script>
     <script>
         function validateSearchForm() {
             var searchTerm = document.getElementById('floatingInput').value;

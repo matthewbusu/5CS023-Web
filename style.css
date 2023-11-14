@@ -1,0 +1,26 @@
+/* Styles for Autocomplete Search Form*/
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ui-autocomplete li {
+    list-style: none;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.ui-autocomplete li:hover {
+    background-color: #f0f0f0;
+}
+
+.ui-state-active,
+.ui-autocomplete li.ui-state-active {
+    background-color: #007bff;
+    color: #fff;
+}
