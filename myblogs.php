@@ -33,9 +33,14 @@ require_once 'access.php';
 
 
   if ($result->num_rows > 0) {
+
       $row = $result->fetch_assoc();
-      $name = $row["name"];
-      $surname = $row["surname"];
+      
+      $encryptedName = $row["name"];
+      $name = openssl_decrypt($encryptedName, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+      
+      $encryptedSurname = $row["surname"];
+      $surname = openssl_decrypt($encryptedSurname, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
   } else {
       
@@ -90,7 +95,7 @@ require_once 'access.php';
       <div class="form-floating mb-3 ">
         <br>
         <h2>
-          <?php echo $name; ?>'s Blogs.
+          <?php echo $name;?> <?php echo $surname; ?>'s Blogs.
         </h2>
         <p>You can view all your posted blogs in this section and can delete any of them.</p><br>
       </div>  
@@ -115,6 +120,7 @@ require_once 'access.php';
             }
 
             $encodedCookie = $_COOKIE['user_id'];
+            
             $encryptedValue = base64_decode($encodedCookie);
             $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
             

@@ -14,10 +14,19 @@ if ($conn->connect_error) {
 }
 // get data from HTML file
 $name = $_POST['name'];
+$encryptedName = openssl_encrypt($name, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
 $surname = $_POST['surname'];
+$encryptedSurname = openssl_encrypt($surname, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
 $email = $_POST['email'];
+$encryptedEmail = openssl_encrypt($email, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
 $password = $_POST['password'];
-$quote = $_POST['quote']; 
+
+$quote = $_POST['quote'];
+//$encryptedValue = openssl_encrypt($userId, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+//$encodedValue = base64_encode($encryptedValue); 
 
 // Password validation
 if (strlen($password) < $passwordMinlength) {
@@ -36,7 +45,7 @@ if (strlen($password) < $passwordMinlength) {
 } else {
     $hashedPass = hash('sha256', $password);
     // SQL query to insert data
-    $sql = "INSERT INTO users (name, surname, email, password, photo, quote ) VALUES ('$name', '$surname', '$email', '$hashedPass', 'photo.jpg', '$quote')";
+    $sql = "INSERT INTO users (name, surname, email, password, photo, quote ) VALUES ('$encryptedName', '$encryptedSurname', '$encryptedEmail', '$hashedPass', 'photo.jpg', '$quote')";
     if ($conn->query($sql) === TRUE) {
         $_SESSION['success_message'] = "Registration successful!";
         header("Location: index.html");

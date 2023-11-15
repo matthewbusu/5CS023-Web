@@ -35,7 +35,8 @@ require_once 'access.php';
 
   if ($result->num_rows > 0) {
       $row = $result->fetch_assoc();
-      $name = $row["name"];
+      $encryptedName = $row["name"];
+      $name = openssl_decrypt($encryptedName, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
       $surname = $row["surname"];
 
   } else {
@@ -109,16 +110,23 @@ require_once 'access.php';
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) 
-        {  
+        {   
+            
           while ($row = $result->fetch_assoc()) 
-            {
+            
+            { $encryptedName = $row["name"];
+              $name = openssl_decrypt($encryptedName, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
+              $encryptedSurname = $row["surname"];
+              $surname = openssl_decrypt($encryptedSurname, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
               echo "<div class='mb-2 p-2 bg-light text-dark justify-content-center'>"; 
               echo  "<div class='row'>";
               echo    "<div class='col'>";
-              echo      "Name: <input class='form-control' type='text' value='" . $row["name"] . "' aria-label='readonly input example' readonly>";
+              echo      "Name: <input class='form-control' type='text' value='" . $name . "' aria-label='readonly input example' readonly>";
               echo    "</div>";
               echo    "<div class='col'>";
-              echo      "Surname: <input class='form-control' type='text' value='" . $row["surname"] . "' aria-label='readonly input example' readonly>";
+              echo      "Surname: <input class='form-control' type='text' value='" . $surname . "' aria-label='readonly input example' readonly>";
               echo    "</div>";
               echo  "</div><br>";
               echo  "Title: <input class='form-control' style='width: 625px' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";

@@ -18,16 +18,18 @@ if ($conn->connect_error) {
 
 
 $email = $_POST['email'];
+$encryptedEmail = openssl_encrypt($email, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
 $password = $_POST['password'];
 $hashedPass = hash('sha256', $password);
 
-$sql = "SELECT * FROM users WHERE email = '$email' AND password = '$hashedPass'";
+$sql = "SELECT * FROM users WHERE email = '$encryptedEmail' AND password = '$hashedPass'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     // Successful login
     $_SESSION['authenticated'] = true;
-    $sql = "SELECT user_id FROM users WHERE email = '$email'";
+    $sql = "SELECT user_id FROM users WHERE email = '$encryptedEmail'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
