@@ -9,7 +9,7 @@
 <body>
   <nav class="navbar navbar-expand-lg bg-success" data-bs-theme="dark">
     <div class="container-fluid" >
-      <a class="navbar-brand" href="#" >Travel Blog Site</a>
+      <a class="navbar-brand" href="Index.html" >Travel Blog Site</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -20,9 +20,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="register.html">Register</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
           </li>
         </ul>
         <form class="d-flex" role="search">
@@ -35,7 +32,7 @@
       <div class="p-3 mb-2 bg-light text-dark">
         <h2>Register Account with Travel Blog</h2><br>
           <p>Welcome to our community! 🎉 We're excited to have you on board. Fill in your details below and Click the registration to complete your sign-up and start exploring the amazing features we have for you.</p><br>
-        <form class="row g-3" action="connect.php" method="post">
+        <form class="row g-3" action="connect.php" method="post" enctype="multipart/form-data">
           <div class="col-6">
             <label for="inputName" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" placeholder="Name" name="name" required>
@@ -59,11 +56,6 @@
           <div class="input-group mb-3">
             <label class="input-group-text" for="inputGroupFile01">Profile Photo</label>
             <input type="file" class="form-control" id="inputGroupFile01" name="image" accept="image/*" >
-          </div>
-          <div class="col-12">
-            <button type="submit" class="btn btn-success">
-              Register No modal
-            </button>
           </div>
           <div class="col-12">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" >

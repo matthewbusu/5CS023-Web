@@ -27,6 +27,7 @@
 
   $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
+
   $sqlUser = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
 
   $result = $conn->query($sqlUser);
@@ -34,9 +35,10 @@
 
   if ($result->num_rows > 0) {
       $row = $result->fetch_assoc();
-      $name = $row["name"];
+      $encryptedName = $row["name"];
+      $name = openssl_decrypt($encryptedName, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
       $surname = $row["surname"];
-    
+
   } else {
       
   }
@@ -103,7 +105,7 @@
   
       
       <?php
-        $sql = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname FROM users, blog WHERE blog.user_id = users.user_id ORDER BY blog.blog_id DESC ";
+        $sql = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname, users.photo, users.quote FROM users, blog WHERE blog.user_id = users.user_id ORDER BY blog.blog_id DESC ";
 
         $result = $conn->query($sql);
         
@@ -116,20 +118,25 @@
           while ($row = $result->fetch_assoc()) 
           
           
-            {
+            { $encryptedName = $row["name"];
+              $name = openssl_decrypt($encryptedName, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
+              $encryptedSurname = $row["surname"];
+              $surname = openssl_decrypt($encryptedSurname, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+              
               echo "
               <div class='mb-2 p-2 bg-light text-dark justify-content-center'>
                 <div class='row'>
                   <div class='col-2 d-flex justify-content-center'>
-                   <img src='/img/po.jpg' style='height: 95px' class='img-thumbnail'>
+                   <img src='/img/" . $row["photo"] . "' style='height: 95px' class='img-thumbnail'>
                   </div>
                   <div class='col-4'>
                     <figure>
                       <blockquote class='blockquote'>
-                        <p>". $row["name"] ." ".  $row["surname"] ."</p>
+                        <p>". $name." ".  $surname ."</p>
                       </blockquote>
                       <figcaption class='blockquote-footer'>
-                        To Travel to see the <cite title='Source Title'>World</cite>
+                        ". $row["quote"] ."
                       </figcaption>
                     </figure> 
                   </div>

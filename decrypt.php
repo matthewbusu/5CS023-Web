@@ -24,7 +24,7 @@
 
 // Decode the value before decrypting
 //$decodedEncryptedValue = base64_decode($encodedEncryptedCookie);
-$v = 'm+ohYy9sVcZ5eXk1a5d9aA==';
+$v = 'bhD72/cte+J+/GxJ5Jr0VQ==';
 // Decrypt the value when needed
 $decryptedValue = openssl_decrypt($v, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
