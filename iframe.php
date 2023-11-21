@@ -44,7 +44,6 @@ else {
   header("Location: countryInfo.php");
 }
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,7 +107,7 @@ else {
       </form>
       <div class="container">
         <div class="p-3 mb-2 bg-light text-dark">
-          <form class="row gy-2 gx-3 align-items-center" action="input_blog.php" method="post" enctype="multipart/form-data">
+          <form class="row gy-2 gx-3 align-items-center">
             <div class="col-6">
                 <label for="inputName" class="form-label">Name: </label>
                 <input class="form-control" type="text" value="<?php echo $name;?>" aria-label="readonly input example" readonly>
@@ -162,7 +161,7 @@ else {
                 allowfullscreen>
             </iframe>
           </form>
-        </div>
+      </div>
     </div>
     </div>
     
