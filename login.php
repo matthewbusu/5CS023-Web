@@ -47,7 +47,7 @@ if ($result->num_rows > 0) {
         $_SESSION['user_id'] = $encodedValue;
         // Store user_id in a cookie valid for 1 hour
         setcookie('user_id', $encodedValue, time()+3600, '/');
-        header("Location: Index_blogger.php");
+        header("Location: indexBlogger.php");
     }
 
     exit();

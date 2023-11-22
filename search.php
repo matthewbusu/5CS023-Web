@@ -1,3 +1,49 @@
+<?php
+
+  require_once 'access.php';
+
+  session_start();
+
+  // Check if the user is authenticated
+  if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+      exit();
+  }
+  
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "test";
+
+  $conn = new mysqli($servername, $username, $password, $dbname);
+
+  if ($conn->connect_error) 
+  {
+    die("Connection failed: " . $conn->connect_error);
+  }
+
+  $encodedCookie = $_COOKIE['user_id'];
+
+  $encryptedValue = base64_decode($encodedCookie);
+
+  $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
+
+  $sqlUser = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
+
+  $result = $conn->query($sqlUser);
+
+
+  if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+      $encryptedName = $row["name"];
+      $name = openssl_decrypt($encryptedName, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+      $surname = $row["surname"];
+
+  } else {
+      
+  }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,10 +62,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page"  href="Index_Blogger.php">Home</a>
+                <a class="nav-link active" aria-current="page"  href="indexBlogger.php">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="news.html">News</a>
+                <a class="nav-link" href="countryInfo.php">Country Info</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="blogger.html">Write Blog</a>
@@ -41,58 +87,71 @@
           </div>
         </div>
       </nav>
-    <div class="container">
-      <br>
-          <form action="search.php" method="post" onsubmit="return validateSearchForm()">
-            <div class="form-floating mb-3 ">
-              <input class="form-control" id="floatingInput" name="searchTerm">
-              <label for="floatingInput">Enter Search here!</label><br>
-              <button type="submit" class="btn btn-light">Search</button>
-            </div>
-          </form>
+      <div class="container" style="width: 50%">
+        <br>
+        <div>
+          <h3>
+            <small class="text-body-secondary"> Welcome to Travel Blog <?php echo $name; $surname; ?>, enjoy your stay and respect other bloggers.</small>
+          </h3>
+        </div>
+        <br>
+        <form action="search.php" method="post" onsubmit="return validateSearchForm()">
+          <div class="form-floating mb-3 ">
+            <input class="form-control" id="floatingInput" name="searchTerm">
+            <label for="floatingInput">Enter Search here!</label><br>
+            <button type="submit" class="btn btn-light">Search</button>
+          </div>
+        </form>
       
 <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "test";
-
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 
 if(isset($_POST['searchTerm'])){
     $searchTerm = $_POST['searchTerm'];
 
    
-    $sql = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname FROM users, blog WHERE blog.user_id = users.user_id AND title LIKE '%$searchTerm%'";
+    $sql = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname, users.photo, users.quote FROM users, blog WHERE blog.user_id = users.user_id AND title LIKE '%$searchTerm%'";
     $sql2 = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname FROM users, blog WHERE blog.user_id = users.user_id AND name LIKE '%$searchTerm%'";
     $result = $conn->query($sql);
 
     
     if ($result->num_rows > 0) {
         
-        while($row = $result->fetch_assoc()) 
-          {
-            echo "<div class='mb-2 p-2 bg-light text-dark'>"; 
-              echo "<div class='row'>";
-              echo  "<div class='col'>";
-              echo    "Name: <input class='form-control' type='text' value='" . $row["name"] . "' aria-label='readonly input example' readonly>";
-              echo  "</div>";
-              echo  "<div class='col'>";
-              echo    "Surname: <input class='form-control' type='text' value='" . $row["surname"] . "' aria-label='readonly input example' readonly>";
-              echo  "</div>";
-              echo "</div><br>";
-              echo "Title: <input class='form-control' style='width: 625px' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";
-              echo "Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>";
-              echo "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'>";
-              echo "</div>";  
+      while ($row = $result->fetch_assoc()) 
+          
+          
+      { $encryptedName = $row["name"];
+        $name = openssl_decrypt($encryptedName, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+
+        $encryptedSurname = $row["surname"];
+        $surname = openssl_decrypt($encryptedSurname, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+        
+        echo "
+        <div class='mb-2 p-2 bg-light text-dark justify-content-center'>
+          <div class='row'>
+            <div class='col-2 d-flex justify-content-center'>
+             <img src='img/profilePhoto/" . $row["photo"] . "' style='height: 95px' class='img-thumbnail'>
+            </div>
+            <div class='col-4'>
+              <figure>
+                <blockquote class='blockquote'>
+                  <p>". $name." ".  $surname ."</p>
+                </blockquote>
+                <figcaption class='blockquote-footer'>
+                  ". $row["quote"] ."
+                </figcaption>
+              </figure> 
+            </div>
+            <div class='col'> 
+              <p class='display-6'>" . $row["title"] . "</p>
+            </div>
+          </div><br>
+          <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>
+          <div class='d-flex justify-content-center'>
+            <img src='img/blogImg/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'>  
+          </div>
+        </div>
+       ";
           }
          } else {
         echo "No results found.";

@@ -62,7 +62,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page"  href="Index_Blogger.php">Home</a>
+              <a class="nav-link active" aria-current="page"  href="indexBlogger.php">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="countryInfo.php">Country Info</a>
@@ -95,7 +95,7 @@
         </h3>
       </div>
       <br>
-      <form action="search.php" method="post">
+      <form action="search.php" method="post" onsubmit="return validateSearchForm()">
         <div class="form-floating mb-3">
           <input class="form-control" id="floatingInput" name="searchTerm">
           <label for="floatingInput">Enter Search here!</label><br>
@@ -128,7 +128,7 @@
               <div class='mb-2 p-2 bg-light text-dark justify-content-center'>
                 <div class='row'>
                   <div class='col-2 d-flex justify-content-center'>
-                   <img src='/img/" . $row["photo"] . "' style='height: 95px' class='img-thumbnail'>
+                   <img src='img/profilePhoto/" . $row["photo"] . "' style='height: 95px' class='img-thumbnail'>
                   </div>
                   <div class='col-4'>
                     <figure>
@@ -144,9 +144,9 @@
                     <p class='display-6'>" . $row["title"] . "</p>
                   </div>
                 </div><br>
-                Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>
+                <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>
                 <div class='d-flex justify-content-center'>
-                  <img src='img/" . $row["filename"] . "' class='d-block w-50 h-50 d-flex justify-content-center' alt='blog image'>  
+                  <img src='img/blogImg/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'>  
                 </div>
               </div>
               
@@ -168,8 +168,22 @@
       ?>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+<script>
+    function validateSearchForm() {
+        var searchTerm = document.getElementById('floatingInput').value;
 
+        
+        var regex = /^[a-zA-Z0-9 ]*$/;
+
+        if (!regex.test(searchTerm)) {
+            alert("Please only enter Text, symbols are not permitted in the search field.");
+            return false; 
+        }
+
+        return true; 
+    }
+</script>
 </body>
 </html>

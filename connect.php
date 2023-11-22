@@ -84,7 +84,7 @@ if (strlen($password) < $passwordMinlength) {
     $hashedPass = hash('sha256', $password);
 
     if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
-        $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/5CS023/img/';
+        $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/5CS023/img/profilePhoto/';
         $targetFile = $targetDir . basename($_FILES["image"]["name"]);
         
     

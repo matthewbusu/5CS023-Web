@@ -132,7 +132,7 @@ require_once 'access.php';
               echo  "Title: <input class='form-control' style='width: 625px' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";
               echo  "Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>";
               echo  "<div class='justify-content-center'>";
-              echo    "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50 ' alt='blog image'>";
+              echo    "<img src='img/blogImg/" . $row["filename"] . "' class='d-block w-50 h-50 ' alt='blog image'>";
               echo  "</div>";
               echo "</div>";
             }

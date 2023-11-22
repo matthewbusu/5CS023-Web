@@ -68,7 +68,7 @@ if ($result->num_rows > 0) {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page"  href="Index_Blogger.php">Home</a>
+              <a class="nav-link active" aria-current="page"  href="indexBlogger.php">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="countryInfo.php">Country Info</a>
@@ -142,7 +142,7 @@ if ($result->num_rows > 0) {
         <h4>
           Password Section.
         </h4><br>
-        <form class="row g-3" action="chpassword.php" method="post">
+        <form class="row g-3" action="changePassword.php" method="post">
           <div class="col-md-12">
             <label for="inputPassword4" class="form-label">Old Password</label>
             <input type="password" class="form-control" id="password" name="oldpassword" required>
