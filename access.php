@@ -5,7 +5,8 @@ $encryptKey = 'Xtv2puXc3ldvToiaSQzw6qoN6Y6LXBtM';
 $encryptIV = 'SQzw6qoN6Y6LXBtM';
 
 //db Password
-$dbpassword = "";
+$dbpassword = "P3fBVyoAe5QRUA8";
+$dbusername = "blogdbuser";
 
 // Password requirements
 $passwordMinlength = 8;

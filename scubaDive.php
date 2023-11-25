@@ -43,16 +43,6 @@ if ($err) {
         echo 'No diving sites found.';
     }
 
-    // if (!empty($divesites) && is_array($divesites)) {
-    //     // Display the first 5 diving sites
-    //     //echo '<ul>';
-    //     for ($i = 0; $i < min(5, count($divesites)); $i++) {
-    //         echo  $divesites[$i]['name'] ;
-    //     }
-    //     //echo '</ul>';
-    // } else {
-    //     echo 'No diving sites found.';
-    // }
 }
 
 ?>

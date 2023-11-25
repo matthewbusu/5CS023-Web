@@ -10,10 +10,9 @@ require_once 'access.php';
   }
   
   $servername = "localhost";
-  $username = "root";
-  $dbname = "test";
+  $dbname = "blogdb";
 
-  $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+  $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 
   if ($conn->connect_error) 
   {
@@ -108,16 +107,8 @@ require_once 'access.php';
       </form>    
       
           <?php
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $dbname = "test";
-        
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
+            
+  
 
             $encodedCookie = $_COOKIE['user_id'];
             

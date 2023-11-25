@@ -10,11 +10,9 @@
   }
   
   $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "test";
+  $dbname = "blogdb";
 
-  $conn = new mysqli($servername, $username, $password, $dbname);
+  $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 
   if ($conn->connect_error) 
   {

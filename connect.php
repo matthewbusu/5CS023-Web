@@ -24,10 +24,9 @@ session_start();
 
 // Database connection parameters
 $servername = "localhost";
-$username = "root";
-$dbname = "test";
+$dbname = "blogdb";
 // Create connection
-$conn = new mysqli($servername, $username, $dbpassword, $dbname);
+$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -85,19 +84,25 @@ if (strlen($password) < $passwordMinlength) {
 
     if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
         $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/5CS023/img/profilePhoto/';
-        $targetFile = $targetDir . basename($_FILES["image"]["name"]);
         
+        $originalPhoto = $_FILES["image"]["name"];
+        $extension = pathinfo($originalPhoto, PATHINFO_EXTENSION);
+        $uniqueName = time() . '_' . uniqid() . '.' . $extension;
+        $targetFile = $targetDir . $uniqueName;
     
-        // Check if the file already exists
-        if (file_exists($targetFile)) {
-            echo "File already exists.";
-        } else {
+    
+
             // Move the uploaded file to the specified directory
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
                 // Save metadata to the database
-                $filename = basename($_FILES["image"]["name"]);
-                $sql = "INSERT INTO users (name, surname, email, password, photo, quote ) VALUES ('$encryptedName', '$encryptedSurname', '$encryptedEmail', '$hashedPass', '$filename', '$quote')";
                 
+                
+                $photo = $uniqueName; 
+                
+                $sql = "INSERT INTO users (name, surname, email, password, photo, quote ) VALUES ('$encryptedName', '$encryptedSurname', '$encryptedEmail', '$hashedPass', '$photo', '$quote')";
+                
+                
+
                 if ($conn->query($sql) === TRUE) {
                     echo "
                         <div class='alert alert-success alert-dismissible fade show' role='alert'>
@@ -122,7 +127,7 @@ if (strlen($password) < $passwordMinlength) {
                     ";
             }
         }
-    } else {
+     else {
         echo "
         <div class='alert alert-warning alert-dismissible fade show' role='alert'>
             <strong>Error!</strong> Sorry, there was an error uploading your file.
@@ -131,15 +136,7 @@ if (strlen($password) < $passwordMinlength) {
         ";
     }
 }
-}else {
-    echo "
-    <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-        <strong>Error!</strong> Sorry, Email is already registered. Please register using another email. 
-        <a href='register.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-    </div>
-    ";
-    
-}     
+} 
 
 $conn->close();
 ?>

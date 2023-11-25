@@ -7,11 +7,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     session_start();
 
 $servername = "localhost";
-$username = "root";
-$dbname = "test";
+$dbname = "blogdb";
 
 
-$conn = new mysqli($servername, $username, $dbpassword, $dbname);
+$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
