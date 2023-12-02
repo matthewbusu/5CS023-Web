@@ -66,7 +66,7 @@
               <a class="nav-link" href="countryInfo.php">Country Info</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="blogger.html">Write Blog</a>
+              <a class="nav-link" aria-current="page" href="blogger.php">Write Blog</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

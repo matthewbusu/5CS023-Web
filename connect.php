@@ -46,39 +46,23 @@ $quote = $_POST['quote'];
 
 $sql = "SELECT * FROM users WHERE email = '$encryptedEmail'";
 $result = $conn->query($sql);
-
+$success = 0;
 if ($result->num_rows == 0) {
 if (strlen($password) < $passwordMinlength) {
-    echo "
-        <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-            <strong>Password</strong>  must be at least $passwordMinlength characters long.
-            <a href='register.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-        </div>
-         ";
+   
+         $success = 1;
 
 } elseif ($passwordUppercase && !preg_match('/[A-Z]/', $password)) {
-    echo "
-        <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-            <strong>Password</strong> must contain at least one uppercase letter.
-            <a href='register.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-        </div>
-        ";
+   
+        $success = 2;
 
 } elseif ($passwordLowercase && !preg_match('/[a-z]/', $password)) {
-    echo "
-        <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-            <strong>Password</strong> must contain at least one lowercase letter.
-            <a href='register.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-        </div>
-        ";
+    
+        $success = 3;
 
 } elseif ($passwordNumber && !preg_match('/[0-9]/', $password)) {
-      echo "
-        <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-            <strong>Password</strong> must contain at least one Number.
-            <a href='register.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-        </div>
-        ";
+      
+        $success = 4;
 } else {
     $hashedPass = hash('sha256', $password);
 
@@ -104,40 +88,29 @@ if (strlen($password) < $passwordMinlength) {
                 
 
                 if ($conn->query($sql) === TRUE) {
-                    echo "
-                        <div class='alert alert-success alert-dismissible fade show' role='alert'>
-                            <strong>Registration Successful!</strong> Please log in and enjoy you time blogging with us.
-                            <a href='login.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-                        </div>
-                        ";
+                   
+                        $success = 5;
                 } else {
-                    echo "
-                        <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                            <strong>Error</strong> There was a problem saving your data, please try again.
-                            <a href='register.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-                        </div>
-                        ";
+                    
+                        $success = 6;
                 }
             } else {
-                echo "     
-                    <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                        <strong>Error!</strong> Sorry, there was an error uploading your file.
-                        <a href='register.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-                    </div>
-                    ";
+               
+                    $success = 7;
             }
         }
      else {
-        echo "
-        <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-            <strong>Error!</strong> Sorry, there was an error uploading your file.
-            <a href='register.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-        </div>
-        ";
+        
+        $success = 8;
     }
 }
-} 
+} else {
+    $success = 9;
+}
 
 $conn->close();
+setcookie('success', $success, time()+3600, '/');
+header("Location: register.php");
+
 ?>
 </body>

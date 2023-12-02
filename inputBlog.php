@@ -45,7 +45,7 @@ $encodedCookie = $_COOKIE['user_id'];
 $encryptedValue = base64_decode($encodedCookie);
 
 $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
-
+$success = 0;
 
 if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
     $targetDir = $_SERVER['DOCUMENT_ROOT'] . '/5CS023/img/blogImg/';
@@ -63,37 +63,19 @@ if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
         $sql = "INSERT INTO blog (user_id, title, blog, filename) VALUES ('$userId', '$title', '$blog', '$filename')";
 
         if ($conn->query($sql) === TRUE) {
-            echo "
-            <div class='alert alert-success alert-dismissible fade show' role='alert'>
-                <strong>Success</strong> Your post has been added to everyone's wall.
-                <a href='indexBlogger.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-            </div>
-            ";
+            $success = 1;
         } else {
-            echo "
-            <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                <strong>Error</strong> Sorry, there was an error with this upload.
-                <a href='blogger.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-            </div>
-            ";
+            $success = 2;
         }
     } else {
-        echo "
-        <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-            <strong>Error</strong> Sorry, there was an error with this upload.
-            <a href='blogger.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-        </div>
-        ";
+        $success = 3;
     }
 } else {
-    echo "
-    <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-        <strong>Error</strong> There is a problem when uploading the image to the blog.
-        <a href='blogger.html'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-    </div>
-    ";
+    $success = 4;
 }
 
+setcookie('success', $success, time()+3600, '/');
+header("Location: blogger.php");
 
 $conn->close();
 

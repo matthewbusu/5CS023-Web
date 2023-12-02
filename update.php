@@ -45,22 +45,20 @@ $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encry
 // SQL query to insert data
 $sql = "UPDATE users SET name = '$encryptedName', surname = '$encryptedSurname', email = '$encryptedEmail' WHERE user_id = '$userId'";
 
+$success = 0;
+
 if ($conn->query($sql) === TRUE) {
-    echo "
-    <div class='alert alert-success alert-dismissible fade show' role='alert'>
-        <strong>Success!</strong> Your personal details have been changed successfuly.
-        <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-    </div>
-    ";
-} else {
-    echo "
-    <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-        <strong>Error!</strong> There was a problem with updating you personal details. 
-        <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-    </div>
-    ";
+    $success = 1;
+} else {    
+    $success = 10;
 }
 
 $conn->close();
+
+setcookie('success', $success, time()+3600, '/');
+header("Location: account.php");
+
 ?>
+      
+
 </body>

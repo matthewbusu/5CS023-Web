@@ -41,6 +41,48 @@
         </div>
       </div>
     </nav>
+    <?php
+    require_once 'access.php';
+        if (isset($_COOKIE['success'] )){
+          $cookie = $_COOKIE['success'];
+            if ($cookie == 1){
+                echo "
+            <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                <strong>Success</strong> Your post has been added to everyone's wall.
+                <a href='indexBlogger.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+            </div>
+            ";
+
+            }
+            elseif ($cookie == 2){
+                echo "
+            <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                <strong>Error</strong> Sorry, there was an error with this upload.
+                <a href='blogger.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+            </div>
+            ";
+            }
+            elseif ($cookie == 3){
+                echo "
+            <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                <strong>Error</strong> Sorry, there was an error with this upload.
+                <a href='blogger.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+            </div>
+            ";
+            }
+            elseif ($cookie == 4){
+                echo "
+            <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                <strong>Error</strong> There is a problem when uploading the image to the blog.
+                <a href='blogger.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+            </div>
+            ";
+            }
+                       
+            setcookie('success', "", time()+3600, '/');
+
+        }   
+    ?>
     <div class="container">
       <div class="p-3 mb-2 bg-light text-dark"><br>
         <div class="form-floating mb-3 ">

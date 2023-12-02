@@ -66,16 +66,16 @@ if ($result->num_rows > 0) {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page"  href="indexBlogger.php">Home</a>
+              <a class="nav-link" aria-current="page"  href="indexBlogger.php">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="countryInfo.php">Country Info</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="blogger.html">Write Blog</a>
+              <a class="nav-link" aria-current="page" href="blogger.php">Write Blog</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 My Profile
               </a>
               <ul class="dropdown-menu">
@@ -91,6 +91,95 @@ if ($result->num_rows > 0) {
         </div>
       </div>
     </nav>
+    <?php
+        if (isset($_COOKIE['success'] )){
+          $cookie = $_COOKIE['success'];
+            if ($cookie == 1){
+              echo "
+            <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                <strong>Success!</strong> Your personal details have been changed successfuly.
+                <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+            </div>
+            ";
+
+            }
+            elseif ($cookie == 10){
+              echo "
+            <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                <strong>Error!</strong> There was a problem with updating you personal details. 
+                <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+            </div>
+            ";
+            }
+            elseif ($cookie == 2){
+              echo "
+              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                  <strong>Error!</strong> Old password does not not match.
+                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+              </div>
+              ";
+            }
+            elseif ($cookie == 3){
+              echo "
+              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                  <strong>Error!</strong> New password and confirm password do not match. Please try again.
+                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+              </div>
+               ";
+            }
+            elseif ($cookie == 4){
+              echo "
+              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                  <strong>Password</strong>  must be at least $passwordMinlength characters long.
+                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+              </div>
+               ";
+            }
+            elseif ($cookie == 5){
+              echo "
+              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                  <strong>Password</strong> must contain at least one uppercase letter.
+                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+              </div>
+              ";
+            }
+            elseif ($cookie == 6){
+              echo "
+              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                  <strong>Password</strong> must contain at least one lowercase letter.
+                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+              </div>
+              ";
+            }
+            elseif ($cookie == 7){
+              echo "
+              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                  <strong>Password</strong> must contain at least one Number.
+                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+              </div>
+              ";
+            }
+            elseif ($cookie == 8){
+              echo "
+            <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                <strong>Password!</strong> changed successfuly.
+                <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+            </div>
+            ";
+            }
+            elseif ($cookie == 9){
+              echo "
+              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                  <strong>Error</strong> updating password.
+                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
+              </div>
+              ";
+            }
+            
+            setcookie('success', "", time()+3600, '/');
+
+        }   
+    ?>
     <div class="container">
       <div class="p-3 mb-2 bg-light text-dark">
         <br>

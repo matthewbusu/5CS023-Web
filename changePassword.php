@@ -52,7 +52,7 @@ $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encry
   $sqlUser = "SELECT password FROM users where user_id = '$userId'";
 
   $result = $conn->query($sqlUser);
-  
+  $success = 0;
 
   if ($result->num_rows > 0) {
    
@@ -60,50 +60,17 @@ $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encry
       $hashedPass = $row["password"];
 
       if ($hashedOldpass != $hashedPass) {
-          echo "
-              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                  <strong>Error!</strong> Old password does not not match.
-                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-              </div>
-              ";
+              $success = 2;
       } elseif ($newpassword != $confirmpassword) {
-          echo "
-              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                  <strong>Error!</strong> New password and confirm password do not match. Please try again.
-                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-              </div>
-               ";
+               $success = 3;
       } elseif (strlen($newpassword) < $passwordMinlength) {
-          echo "
-              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                  <strong>Password</strong>  must be at least $passwordMinlength characters long.
-                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-              </div>
-               ";
-      
+               $success = 4;
       } elseif ($passwordUppercase && !preg_match('/[A-Z]/', $newpassword)) {
-          echo "
-              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                  <strong>Password</strong> must contain at least one uppercase letter.
-                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-              </div>
-              ";
-      
+              $success = 5;
       } elseif ($passwordLowercase && !preg_match('/[a-z]/', $newpassword)) {
-          echo "
-              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                  <strong>Password</strong> must contain at least one lowercase letter.
-                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-              </div>
-              ";
-      
+              $success = 6;
       } elseif ($passwordNumber && !preg_match('/[0-9]/', $newpassword)) {
-            echo "
-              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                  <strong>Password</strong> must contain at least one Number.
-                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-              </div>
-              ";
+              $success = 7;
       }
         else 
       {
@@ -111,33 +78,20 @@ $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encry
           $sql = "UPDATE users SET password = '$hashedNewpass' WHERE user_id = '$userId'";
   
           if ($conn->query($sql) === TRUE) {
-            echo "
-            <div class='alert alert-success alert-dismissible fade show' role='alert'>
-                <strong>Password!</strong> changed successfuly.
-                <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-            </div>
-            ";
+            $success = 8;
           } else {
-              echo "
-              <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-                  <strong>Error</strong> updating password.
-                  <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-              </div>
-              ";
+              $success = 9;
           }
       }
   
     } 
     else {
-      echo "
-      <div class='alert alert-warning alert-dismissible fade show' role='alert'>
-          <strong>Error</strong> updating password.
-          <a href='account.php'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></a>
-      </div>
-      ";
-  
+      $success = 10;
     }
 // Close the database connection
 $conn->close();
+
+setcookie('success', $success, time()+3600, '/');
+header("Location: account.php");
 ?>
 </blog>
