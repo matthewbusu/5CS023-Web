@@ -125,7 +125,7 @@ require_once 'access.php';
                     echo "<div class='mb-2 p-2 bg-light text-dark'>";
                     echo "Title: <input class='form-control' type='text' value='" . $row["title"] . "' aria-label='readonly input example' readonly><br>";    
                     echo "Blog: <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>";
-                    echo "<img src='img/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'><br>";
+                    echo "<img src='img/blogImg/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'><br>";
                     echo "<form action='delete.php' method='POST'>";
                     echo "<input class='form-control' type='hidden' value='" . $row["blog_id"] . "' aria-label='readonly input example' readonly name='blog_id'>";
                     echo "<button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#staticBackdrop'>Delete </button>";

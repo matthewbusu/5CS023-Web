@@ -12,7 +12,7 @@
   $servername = "localhost";
   $dbname = "blogdb";
 
-  $conn = new mysqli($servername, $dbusername, $password, $dbname);
+  $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 
   if ($conn->connect_error) 
   {
@@ -109,7 +109,7 @@ if(isset($_POST['searchTerm'])){
 
    
     $sql = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname, users.photo, users.quote FROM users, blog WHERE blog.user_id = users.user_id AND title LIKE '%$searchTerm%'";
-    $sql2 = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname FROM users, blog WHERE blog.user_id = users.user_id AND name LIKE '%$searchTerm%'";
+  
     $result = $conn->query($sql);
 
     
@@ -152,9 +152,102 @@ if(isset($_POST['searchTerm'])){
        ";
           }
          } else {
-        echo "No results found.";
+          
+          $encryptedSearch = openssl_encrypt($searchTerm, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+          
+          $sql2 = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname, users.photo, users.quote FROM users, blog WHERE blog.user_id = users.user_id AND users.name LIKE '%$encryptedSearch%'";
+          $result2 = $conn->query($sql2);
+          if ($result2->num_rows > 0) {
+            
+            while ($row = $result2->fetch_assoc()) 
+                
+                
+            { 
+              $encryptedName = $row["name"];
+              $name = openssl_decrypt($encryptedName, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+      
+              $encryptedSurname = $row["surname"];
+              $surname = openssl_decrypt($encryptedSurname, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+              
+              echo "
+              <div class='mb-2 p-2 bg-light text-dark justify-content-center'>
+                <div class='row'>
+                  <div class='col-2 d-flex justify-content-center'>
+                  <img src='img/profilePhoto/" . $row["photo"] . "' style='height: 95px' class='img-thumbnail'>
+                  </div>
+                  <div class='col-4'>
+                    <figure>
+                      <blockquote class='blockquote'>
+                        <p>". $name." ".  $surname ."</p>
+                      </blockquote>
+                      <figcaption class='blockquote-footer'>
+                        ". $row["quote"] ."
+                      </figcaption>
+                    </figure> 
+                  </div>
+                  <div class='col'> 
+                    <p class='display-6'>" . $row["title"] . "</p>
+                  </div>
+                </div><br>
+                <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>
+                <div class='d-flex justify-content-center'>
+                  <img src='img/blogImg/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'>  
+                </div>
+              </div>
+              ";
+            }
+           } else {
+          
+            $encryptedSearch = openssl_encrypt($searchTerm, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+            
+            $sql2 = "SELECT blog.blog_id, blog.title, blog.blog, blog.filename, users.name, users.surname, users.photo, users.quote FROM users, blog WHERE blog.user_id = users.user_id AND users.surname LIKE '%$encryptedSearch%'";
+            $result2 = $conn->query($sql2);
+            if ($result2->num_rows > 0) {
+              
+              while ($row = $result2->fetch_assoc()) 
+                  
+                  
+              { 
+                $encryptedName = $row["name"];
+                $name = openssl_decrypt($encryptedName, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+        
+                $encryptedSurname = $row["surname"];
+                $surname = openssl_decrypt($encryptedSurname, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
+                
+                echo "
+                <div class='mb-2 p-2 bg-light text-dark justify-content-center'>
+                  <div class='row'>
+                    <div class='col-2 d-flex justify-content-center'>
+                    <img src='img/profilePhoto/" . $row["photo"] . "' style='height: 95px' class='img-thumbnail'>
+                    </div>
+                    <div class='col-4'>
+                      <figure>
+                        <blockquote class='blockquote'>
+                          <p>". $name." ".  $surname ."</p>
+                        </blockquote>
+                        <figcaption class='blockquote-footer'>
+                          ". $row["quote"] ."
+                        </figcaption>
+                      </figure> 
+                    </div>
+                    <div class='col'> 
+                      <p class='display-6'>" . $row["title"] . "</p>
+                    </div>
+                  </div><br>
+                  <textarea class='form-control' style='height: 150px' readonly>" . $row["blog"] . "</textarea><br>
+                  <div class='d-flex justify-content-center'>
+                    <img src='img/blogImg/" . $row["filename"] . "' class='d-block w-50 h-50' alt='blog image'>  
+                  </div>
+                </div>
+                ";
+              }
+             } else {
+            echo "No results found.";
+        }
     }
-}
+  }
+  }
+
 
 $conn->close();
 ?>
