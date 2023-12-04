@@ -38,12 +38,15 @@ $encryptedSurname = openssl_encrypt($surname, 'aes-256-cbc', $encryptKey, 0, $en
 $email = $_POST['email'];
 $encryptedEmail = openssl_encrypt($email, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
+$quote = $_POST['quote'];
+$quoteremoveSymbols = mysqli_real_escape_string($conn, $quote);
+
 $encodedCookie = $_COOKIE['user_id'];
 $encryptedValue = base64_decode($encodedCookie);
 $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
 // SQL query to insert data
-$sql = "UPDATE users SET name = '$encryptedName', surname = '$encryptedSurname', email = '$encryptedEmail' WHERE user_id = '$userId'";
+$sql = "UPDATE users SET name = '$encryptedName', surname = '$encryptedSurname', email = '$encryptedEmail', quote = '$quoteremoveSymbols' WHERE user_id = '$userId'";
 
 $success = 0;
 

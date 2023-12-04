@@ -29,6 +29,8 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
 $servername = "localhost";
 $dbname = "blogdb";
 
+
+
 // Create connection
 $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 if ($conn->connect_error) {
@@ -39,6 +41,8 @@ if ($conn->connect_error) {
 $title = $_POST['title'];
 $blog = $_POST['blog'];
 
+$titleremoveSymbols = mysqli_real_escape_string($conn, $title);
+$blogremoveSymbols = mysqli_real_escape_string($conn, $blog);
 
 $encodedCookie = $_COOKIE['user_id'];
 
@@ -60,7 +64,7 @@ if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
     if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
        
         $filename = $uniqueName; 
-        $sql = "INSERT INTO blog (user_id, title, blog, filename) VALUES ('$userId', '$title', '$blog', '$filename')";
+        $sql = "INSERT INTO blog (user_id, title, blog, filename) VALUES ('$userId', '$titleremoveSymbols', '$blogremoveSymbols', '$filename')";
 
         if ($conn->query($sql) === TRUE) {
             $success = 1;

@@ -23,7 +23,7 @@ $encodedCookie = $_COOKIE['user_id'];
 $encryptedValue = base64_decode($encodedCookie);
 $userId = openssl_decrypt($encryptedValue, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
-$sql = "SELECT name, surname, email, password FROM users where user_id = '$userId'";
+$sql = "SELECT name, surname, email, password, quote, photo FROM users where user_id = '$userId'";
 
 $result = $conn->query($sql);
 
@@ -41,6 +41,10 @@ if ($result->num_rows > 0) {
     $email = openssl_decrypt($encryptedEmail, 'aes-256-cbc', $encryptKey, 0, $encryptIV);
 
     $password = $row["password"];
+
+    $photo = $row["photo"];
+
+    $quote = $row["quote"];
     
 } else {
     
@@ -187,18 +191,58 @@ if ($result->num_rows > 0) {
           Account Section.
         </h2>
         <p>Manage your profile effortlessly by updating your details and securing your account with a strong password. 🔐</p><br>
-        <form class="row g-3" action="update.php" method="post">
-          <div class="col-12">
+        <form class="row g-3" action="updateProfilePhoto.php" method="post" enctype="multipart/form-data">
+          <div class="col-12 d-flex justify-content-right">
+            <img src="img/profilePhoto/<?php echo $photo;?>"  style="height: 120px" class="img-thumbnail">
+          </div>
+          <div class="col-md-12">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#static3Backdrop">
+              Change Profile Picture
+            </button>
+            <div class="modal fade" id="static3Backdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Change Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Change your Profile Picture 
+                  </div>
+                  <div class="col-12 d-flex justify-content-center">
+                    <img src="img/profilePhoto/<?php echo $photo;?>"  style="height: 200px" class="img-thumbnail">
+                  </div>
+                  <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupFile01">Profile Photo</label>
+                    <input type="file" class="form-control" id="inputGroupFile01" name="image" accept="image/*">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Confirm</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form><br>
+      </div>
+      <div class="p-3 mb-2 bg-light text-dark">  
+        <form class="row g-3" action="update.php" method="post">  
+          <div class="col-6">
             <label for="inputName" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" placeholder="Name" name="name" required value="<?php echo $name; ?>">
           </div>
-          <div class="col-12">
+          <div class="col-6">
             <label for="inputSurname" class="form-label">Surname</label>
             <input type="text" class="form-control" id="surname" placeholder="Surname" required name="surname" value="<?php echo $surname; ?>">
           </div>
           <div class="col-md-6">
             <label for="inputEmail4" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email" required value="<?php echo $email; ?>">
+          </div>
+          <div class="col-6">
+            <label for="inputSurname" class="form-label">Re-type your Quote</label>
+            <input type="text" class="form-control" id="quote" placeholder="Quote" name="quote"  required value="<?php echo $quote;?>">
           </div>
           <div class="col-md-12">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -224,8 +268,7 @@ if ($result->num_rows > 0) {
           </div>  
         </form>
       </div>
-      <div class="p-3 mb-2 bg-light text-dark">
-      <div class="form-floating mb-3 ">
+      <div class="p-3 mb-2 bg-light text-dark form-floating mb-3 ">
         <h4>
           Password Section.
         </h4><br>

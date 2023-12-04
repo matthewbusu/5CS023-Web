@@ -43,6 +43,7 @@ $encryptedEmail = openssl_encrypt($email, 'aes-256-cbc', $encryptKey, 0, $encryp
 $password = $_POST['password'];
 
 $quote = $_POST['quote'];
+$quoteremoveSymbols = mysqli_real_escape_string($conn, $quote);
 
 $sql = "SELECT * FROM users WHERE email = '$encryptedEmail'";
 $result = $conn->query($sql);
@@ -83,7 +84,7 @@ if (strlen($password) < $passwordMinlength) {
                 
                 $photo = $uniqueName; 
                 
-                $sql = "INSERT INTO users (name, surname, email, password, photo, quote ) VALUES ('$encryptedName', '$encryptedSurname', '$encryptedEmail', '$hashedPass', '$photo', '$quote')";
+                $sql = "INSERT INTO users (name, surname, email, password, photo, quote ) VALUES ('$encryptedName', '$encryptedSurname', '$encryptedEmail', '$hashedPass', '$photo', '$quoteremoveSymbols')";
                 
                 
 
